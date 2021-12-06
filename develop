@@ -9,10 +9,7 @@ export DB_NAME=${DB_NAME:=wordpress}
 export DB_USER=${DB_USER:=wordpress}
 export DB_PASS=${DB_PASS:=secret}
 
-# Decide which docker-compose file to use
-COMPOSE_FILE="dev"
-
-COMPOSE="docker-compose -f docker-compose.$COMPOSE_FILE.yml"
+COMPOSE="docker compose"
 
 if [ $# -gt 0 ]; then
   # If "composer" is used, pass-thru to "composer"
@@ -45,10 +42,6 @@ if [ $# -gt 0 ]; then
         -w /var/www/html \
         app \
         composer create-project roots/bedrock .
-    $COMPOSE run --rm $TTY \
-        -w /var/www/html/web/app/themes \
-        app \
-        composer create-project roots/sage $1 dev-master
 
   # Else, pass-thru args to docker-compose
   else

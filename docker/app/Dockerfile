@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 MAINTAINER Joe Purdy <hello@joepurdy.io>
 
@@ -19,18 +19,17 @@ RUN add-apt-repository -y ppa:ondrej/php \
 
 # Basic Requirements
 RUN apt update \
-    && apt install -y nginx curl unzip git supervisor wget python-pip sqlite3
+    && apt install -y nginx curl unzip git supervisor wget sqlite3
 
 # PHP Requirements
 RUN apt update \
-    && apt install -y php7.1 php7.1-fpm php7.1-cli php7.1-mcrypt php7.1-gd php7.1-mysql \
-    php7.1-imap php-memcached php7.1-mbstring php7.1-xml php7.1-curl \
-    php7.1-sqlite3
+    && apt install -y php7.4 php7.4-fpm php7.4-cli php7.4-mcrypt php7.4-gd php7.4-mysql \
+    php7.4-imap php-memcached php7.4-mbstring php7.4-xml php7.4-curl \
+    php7.4-sqlite3
 
 # Wordpress Requirements
 RUN apt update \
-    && apt install -y libnuma-dev php7.1-intl php-pear php7.1-imagick \
-    php7.1-ps php7.1-pspell php7.1-recode php7.1-sqlite php7.1-tidy php7.1-xmlrpc php7.1-xsl
+    && apt install -y libnuma-dev php7.4-intl php-pear php7.4-imagick
 
 # Install Composer
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
@@ -51,7 +50,8 @@ RUN mkdir /run/php \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY default /etc/nginx/sites-available/default
-COPY php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
+COPY php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
+COPY php.ini /etc/php/7.4/fpm/php.ini
 
 EXPOSE 80
 
